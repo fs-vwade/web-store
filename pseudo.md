@@ -8,3 +8,5 @@
 8. Above the main area is a nav bar header, containing redirect and login areas
 9. Below the main area is a nav map footer, containing links to parts of the site
 10. The site map has a horizontal flow, and each subsection a vertical flow
+11. Adjusting the size of the page reveals layout responsiveness
+12. Reducing the page width reveals a mobile-friendly layout
