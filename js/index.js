@@ -5,7 +5,7 @@
  * child items should each be a Component type, apiece
  */
 class Component {
-	constructor(collection:Object=null) {
+	constructor(collection: Object = null) {
 		if (collection && collection.name) {
 			this.type = collection.name;
 			this.id = collection.id || null;
@@ -13,21 +13,18 @@ class Component {
 			this.href = collection.href || null;
 			this.text = collection.text || null;
 			this.label = collection.class || collection.name;
-			this.children = (
-				Array.isArray(collection.subcomponents)
-			) ? (
-				collection.subcomponents
-			) : (null);
+			this.children = Array.isArray(collection.subcomponents)
+				? collection.subcomponents
+				: null;
 		} else {
 			console.error(
 				`ERROR: Component object not properly confifgured: ${{
-					is_defined: !! (collection),
-					has_type: !! (collection.name),
-					has_label: !! (collection.class),
-					has_child_elements: (
+					is_defined: !!collection,
+					has_type: !!collection.name,
+					has_label: !!collection.class,
+					has_child_elements:
 						Array.isArray(collection.subcomponents) &&
-						0 < collection.subcomponents.length
-					),
+						0 < collection.subcomponents.length,
 				}}`
 			);
 		}
@@ -40,10 +37,10 @@ class Component {
 		if (this.href) result.href = this.href;
 		result.innerText = this.text ? this.text : null;
 		result.className = this.label;
-		if (Array.isArray(this.children)){
-			this.children.forEach(e => {
-				item.append(e.element);
-			})
+		if (Array.isArray(this.children)) {
+			this.children.forEach((e) => {
+				result.append(e.element);
+			});
 		}
 		return result;
 	}
@@ -70,11 +67,31 @@ const elements = [
 		subcomponents: [
 			new Component({
 				name: "nav",
-				class: "nav-header",
+				class: "quick-nav",
 			}),
 			new Component({
 				name: "div",
 				class: "login",
+			}),
+			new Component({
+				name: "div",
+				class: "search-header",
+				subcomponents: [
+					new Component({
+						name: "h1",
+						class: "site-lettermark",
+						text: "Qwirty",
+					}),
+					new Component({
+						name: "form",
+						class: "search-bar",
+						subcomponents: [
+							new Component({ name: "input", class: "input" }),
+							new Component({ name: "button", class: "button" }),
+						],
+					}),
+					new Component({ name: "a", class: "advert", href: "#" }),
+				],
 			}),
 		],
 	}),
@@ -82,19 +99,8 @@ const elements = [
 		name: "main",
 		subcomponents: [
 			new Component({
-				name: "div",
-				class: "search-header",
-				subcomponents: [
-					new Component({name: "h1", class: "site-lettermark", text: "Qwirty"}),
-					new Component({name: "form", class: "search-bar", subcomponents: [
-						new Component({name: "input", class: "input"}),
-						new Component({name: "button", class: "button"}),
-					new Component({name: "a", class: "advert", href: "#"}),
-				]
-			}),
-			new Component({
 				name: "nav",
-				class: "product-categories",
+				class: "nav-categories",
 			}),
 			new Component({
 				name: "section",
@@ -112,20 +118,22 @@ const elements = [
 				subcomponents: [
 					new Component({
 						name: "h2",
-						text: "Navigation Header-2"
+						text: "Navigation Header-2",
 					}),
 					new Component({
-						name: "ul",
-						subcomponents: [
-							"Link 1",
-							"Link 2",
-							"Link 3",
-							"Link 4",
-						].forEach(context => {
-							return new Component({name: "li", text: context})
-						})
+						name: "menu",
+						subcomponents: ["Link 1", "Link 2", "Link 3", "Link 4"].map(
+							(context) => {
+								return new Component({
+									name: "li",
+									subcomponents: [
+										new Component({ name: "a", href: "#", text: context }),
+									],
+								});
+							}
+						),
 					}),
-				]
+				],
 			}),
 			new Component({
 				name: "nav",
@@ -134,20 +142,22 @@ const elements = [
 				subcomponents: [
 					new Component({
 						name: "h2",
-						text: "Navigation Header-2"
+						text: "Navigation Header-2",
 					}),
 					new Component({
-						name: "ul",
-						subcomponents: [
-							"Link 1",
-							"Link 2",
-							"Link 3",
-							"Link 4",
-						].forEach(context => {
-							return new Component({name: "li", text: context})
-						})
+						name: "menu",
+						subcomponents: ["Link 1", "Link 2", "Link 3", "Link 4"].map(
+							(context) => {
+								return new Component({
+									name: "li",
+									subcomponents: [
+										new Component({ name: "a", href: "#", text: context }),
+									],
+								});
+							}
+						),
 					}),
-				]
+				],
 			}),
 			new Component({
 				name: "nav",
@@ -156,53 +166,26 @@ const elements = [
 				subcomponents: [
 					new Component({
 						name: "h2",
-						text: "Navigation Header-2"
+						text: "About Us",
 					}),
 					new Component({
-						name: "ul",
-						subcomponents: [
-							"Link 1",
-							"Link 2",
-							"Link 3",
-							"Link 4",
-						].forEach(context => {
-							return new Component({name: "li", text: context})
-						})
+						name: "menu",
+						subcomponents: ["Link 1", "Link 2", "Link 3", "Link 4"].map(
+							(context) => {
+								return new Component({
+									name: "li",
+									subcomponents: [
+										new Component({ name: "a", href: "#", text: context }),
+									],
+								});
+							}
+						),
 					}),
-				]
+				],
 			}),
 		],
 	}),
 ];
-
-
-tmp = {
-	// create major page elements
-	header: {
-		name: "header"
-		// create header sub-elements
-		nav: {
-			// create nav sub-elements
-			name: "header",
-			link
-		},
-		login: {
-			name: "div",
-		},
-	},
-	main: {
-		// create main sub-elements
-		search_subsection: document.createElement("div"),
-		nav: document.createElement("nav"),
-		products: document.createElement("section"),
-	},
-	footer: {
-		// create footer sub-elements
-		customer_care: document.createElement("div"),
-		sales: document.createElement("div"),
-		about_us: document.createElement("div"),
-	},
-};
 
 /** I am considering a second version that will replace the header and footer
  * with statically placed elements that retain their position at the top and
@@ -210,39 +193,7 @@ tmp = {
  *
  * A fixed location, if you will. */
 
-/**
- *
- * @param {Object} container_item
- * @param {HTMLElement} parent_element
- */
-function create_elements(container_item, parent_element) {
-
-	Object.entries(elements).forEach(e => {
-		const section = {
-			name: e[0],
-			items: e[1],
-		}
-
-		// create parent/base element
-		const section.element = document.createElement(section.name);
-		const section.element.className = section.name;
-
-		// assign children elements to parent/base
-		Object.entries(section.items).forEach(e => {
-			if ((e[0] === "label")) {
-			} else {
-				create_elements(e[1], )
-			}
-		})
-		//if ((e[0] === "label" && typeof(e[1]) === "string")) {
-		//	const section = {
-		//		element: document.createElement(e[1])}
-		//} else {
-		//}
-
-	});
-
-	parent_element.append(section.element);
-}
-
-
+/** For now, we continue as before. */
+Object.entries(elements).forEach((e) => {
+	body.append(e.element);
+});
