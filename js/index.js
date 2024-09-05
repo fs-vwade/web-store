@@ -5,7 +5,7 @@
  * child items should each be a Component type, apiece
  */
 class Component {
-	constructor(collection: Object = null) {
+	constructor(collection = null) {
 		if (collection && collection.name) {
 			this.type = collection.name;
 			this.id = collection.id || null;
@@ -194,6 +194,7 @@ const elements = [
  * A fixed location, if you will. */
 
 /** For now, we continue as before. */
-Object.entries(elements).forEach((e) => {
+elements.forEach((e) => {
+	console.log(e);
 	body.append(e.element);
 });
