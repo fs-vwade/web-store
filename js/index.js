@@ -13,7 +13,7 @@ class Component {
 			this.href = collection.href || null;
 			this.text = collection.text || null;
 			this.label = collection.class || collection.name;
-			this.children = Array.isArray(collection.subcomponents)
+			this.sublets = Array.isArray(collection.subcomponents)
 				? collection.subcomponents
 				: null;
 		} else {
@@ -30,19 +30,79 @@ class Component {
 		}
 	}
 
+	get children() {
+		const elements = [];
+		this.sublets.forEach((e) => {
+			elements.push(e.export);
+		});
+		return elements;
+	}
+
 	get element() {
-		const result = document.createElement(this.type);
-		if (this.id) result.id = this.id;
-		if (this.src) result.src = this.src;
-		if (this.href) result.href = this.href;
-		result.innerText = this.text ? this.text : null;
-		result.className = this.label;
-		if (Array.isArray(this.children)) {
-			this.children.forEach((e) => {
-				result.append(e.element);
-			});
+		return this.export;
+	}
+
+	get export() {
+		if (!this.result) {
+			this.result = document.createElement(this.type);
+			if (this.id) this.result.id = this.id;
+			if (this.src) this.result.src = this.src;
+			if (this.href) this.result.href = this.href;
+			this.result.innerText = this.text ? this.text : null;
+			this.result.className = this.label;
+			if (Array.isArray(this.sublets)) {
+				this.sublets.forEach((e) => {
+					this.result.append(e.element);
+				});
+			}
 		}
-		return result;
+		return this.result;
+	}
+}
+class Card {
+	constructor(info) {
+		this.body = document.createElement("card");
+
+		const header = info.header || null;
+		const text = info.text || null;
+		const menu = Array.isArray(info.menu) ? info.menu : null;
+
+		if (header) {
+			this.header = document.createElement("h2");
+			this.header.innerText = header;
+			this.header.className = "card-header";
+
+			this.body.append(this.header);
+		}
+		if (text) {
+			this.text = document.createElement("div");
+			this.text.innerText = text;
+			this.text.className = "card-text";
+
+			this.body.append(this.text);
+		}
+		if (menu) {
+			this.menu = document.createElement("menu");
+			this.menu.className = "card-menu";
+
+			menu.forEach((e) => {
+				const li = document.createElement("li");
+
+				// make modifications to the menu item
+				e.className = "card-menu-item";
+
+				// append each menu item to the list item
+				li.append(e);
+
+				this.menu.append(li);
+			});
+
+			this.body.append(this.menu);
+		}
+	}
+
+	get card() {
+		return this.body;
 	}
 }
 
@@ -206,7 +266,7 @@ const elements = [
 			}),
 		],
 	}),
-].map((e) => e.element);
+];
 
 /** I am considering a second version that will replace the header and footer
  * with statically placed elements that retain their position at the top and
@@ -217,5 +277,12 @@ const elements = [
 /** For now, we continue as before. */
 console.log(elements);
 elements.forEach((e) => {
-	body.append(e);
+	e.children.forEach((e) => {
+		const d = e;
+		console.log(d.childNodes);
+	});
+	console.log(e.children);
+});
+elements.forEach((e) => {
+	body.append(e.element);
 });
