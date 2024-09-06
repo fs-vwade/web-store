@@ -1,3 +1,5 @@
+// Copyright Victor Wade
+
 /** HTML Component
  *
  * @param {Object} collection
@@ -59,50 +61,125 @@ class Component {
 		return this.result;
 	}
 }
+class Menu {
+	constructor(list) {
+		this.menu = document.createElement("menu");
+
+		this.add_items(list);
+		return this.element;
+	}
+
+	add_items(list) {
+		list.forEach((e) => {
+			const li = document.createElement("li");
+			const element = e.element;
+
+			li.append(element);
+			this.menu.append(li);
+		});
+	}
+
+	get element() {
+		return this.menu;
+	}
+}
+/** info = {
+ * 	type: String,
+ * 	header: String,
+ * 	text: String,
+ * 	menu: Array[Component],
+ * }
+ *
+ */
 class Card {
 	constructor(info) {
-		this.body = document.createElement("card");
+		this.container = document.createElement(info.type || "card");
+		this.header = document.createElement("div");
+		this.main = info.body || document.createElement("section");
+		this.footer = document.createElement("div");
 
 		const header = info.header || null;
+		const footer = info.footer || null;
+		const img = info.img || null;
 		const text = info.text || null;
 		const menu = Array.isArray(info.menu) ? info.menu : null;
+		const main_subelements = Array.isArray(info.main_subelements)
+			? info.main_subelements
+			: null;
+
+		this.header.className = "card-header";
+		this.main.className = "card-main";
+		this.footer.className = "card-footer";
 
 		if (header) {
-			this.header = document.createElement("h2");
-			this.header.innerText = header;
-			this.header.className = "card-header";
+			if (typeof header === "string") {
+				const card_header_text = document.createElement("h2");
+				card_header_text.innerText = header;
+				this.header.append(card_header_text);
+			} else {
+				const card_header = header.element;
+				this.header.append(card_header);
+			}
+		}
+		if (img) {
+			this.img = document.createElement("img");
+			this.img.src = img;
+			this.img.className = "card-img";
 
-			this.body.append(this.header);
+			this.main.append(this.img);
 		}
 		if (text) {
-			this.text = document.createElement("div");
+			this.text = document.createElement("text");
 			this.text.innerText = text;
 			this.text.className = "card-text";
 
-			this.body.append(this.text);
+			this.main.append(this.text);
+		}
+		if (main_subelements) {
+			main_subelements.forEach((e) => {
+				const element = e.element;
+				element.className = "card-main-item";
+
+				this.main.append(element);
+			});
 		}
 		if (menu) {
-			this.menu = document.createElement("menu");
+			this.menu = new Menu(menu);
 			this.menu.className = "card-menu";
 
-			menu.forEach((e) => {
-				const li = document.createElement("li");
+			//menu.forEach((e) => {
+			//	const li = document.createElement("li");
+			//	const element = e.element;
 
-				// make modifications to the menu item
-				e.className = "card-menu-item";
+			//	// make modifications to the menu item
+			//	element.className = "card-menu-item";
 
-				// append each menu item to the list item
-				li.append(e);
+			//	// append each menu item to the list item
+			//	li.append(element);
 
-				this.menu.append(li);
-			});
+			//	this.menu.append(li);
+			//});
 
-			this.body.append(this.menu);
+			this.main.append(this.menu);
 		}
+		if (footer) {
+			if (typeof footer === "string") {
+				const card_footer_text = document.createElement("text");
+				card_footer_text.innerText = footer;
+				this.footer.append(card_footer_text);
+			} else {
+				const card_footer = footer.element;
+				this.footer.append(card_footer);
+			}
+		}
+
+		this.container.append(this.header);
+		this.container.append(this.main);
+		this.container.append(this.footer);
 	}
 
-	get card() {
-		return this.body;
+	get element() {
+		return this.container;
 	}
 }
 
@@ -185,6 +262,17 @@ const elements = [
 			new Component({
 				name: "section",
 				class: "product-grid",
+				subcomponents: Array(16)
+					.fill()
+					.map((e) => {
+						return new Card({
+							header: "Your Product!",
+							text: "lorem ipsum",
+							img: "#",
+							footer: "Price: $$$",
+							menu: [new Component({ name: "text", text: "some text" })],
+						});
+					}),
 			}),
 		],
 	}),
