@@ -66,7 +66,6 @@ class Menu {
 		this.menu = document.createElement("menu");
 
 		this.add_items(list);
-		return this.element;
 	}
 
 	add_items(list) {
@@ -289,19 +288,11 @@ const elements = [
 						name: "h2",
 						text: "Navigation Header-2",
 					}),
-					new Component({
-						name: "menu",
-						subcomponents: ["Link 1", "Link 2", "Link 3", "Link 4"].map(
-							(context) => {
-								return new Component({
-									name: "li",
-									subcomponents: [
-										new Component({ name: "a", href: "#", text: context }),
-									],
-								});
-							}
-						),
-					}),
+					new Menu(
+						["Link 1", "Link 2", "Link 3", "Link 4"].map((context) => {
+							return new Component({ name: "a", href: "#", text: context });
+						})
+					),
 				],
 			}),
 			new Component({
@@ -313,19 +304,11 @@ const elements = [
 						name: "h2",
 						text: "Navigation Header-2",
 					}),
-					new Component({
-						name: "menu",
-						subcomponents: ["Link 1", "Link 2", "Link 3", "Link 4"].map(
-							(context) => {
-								return new Component({
-									name: "li",
-									subcomponents: [
-										new Component({ name: "a", href: "#", text: context }),
-									],
-								});
-							}
-						),
-					}),
+					new Menu(
+						["Link 1", "Link 2", "Link 3", "Link 4"].map((context) => {
+							return new Component({ name: "a", href: "#", text: context });
+						})
+					),
 				],
 			}),
 			new Component({
@@ -337,19 +320,11 @@ const elements = [
 						name: "h2",
 						text: "About Us",
 					}),
-					new Component({
-						name: "menu",
-						subcomponents: ["Link 1", "Link 2", "Link 3", "Link 4"].map(
-							(context) => {
-								return new Component({
-									name: "li",
-									subcomponents: [
-										new Component({ name: "a", href: "#", text: context }),
-									],
-								});
-							}
-						),
-					}),
+					new Menu(
+						["Link 1", "Link 2", "Link 3", "Link 4"].map((context) => {
+							return new Component({ name: "a", href: "#", text: context });
+						})
+					),
 				],
 			}),
 		],
@@ -364,13 +339,13 @@ const elements = [
 
 /** For now, we continue as before. */
 console.log(elements);
-elements.forEach((e) => {
-	e.children.forEach((e) => {
-		const d = e;
-		console.log(d.childNodes);
-	});
-	console.log(e.children);
-});
+//elements.forEach((e) => {
+//	e.children.forEach((e) => {
+//		const d = e;
+//		console.log(d.childNodes);
+//	});
+//	console.log(e.children);
+//});
 elements.forEach((e) => {
 	body.append(e.element);
 });
