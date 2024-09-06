@@ -63,15 +63,34 @@ class Component {
 const body = document.body;
 const elements = [
 	new Component({
-		name: "header",
+		name: "header", // contains the top nav bar and search bar
+		class: "page",
 		subcomponents: [
 			new Component({
 				name: "nav",
-				class: "quick-nav",
-			}),
-			new Component({
-				name: "div",
-				class: "login",
+				class: "top-bar",
+				subcomponents: [
+					new Component({
+						name: "menu",
+						subcomponents: [
+							"Big Deals",
+							"Top Brands",
+							"Suggestions",
+							"Help & Contact", // This can go at the bottom, site map
+						].map((e) => {
+							return new Component({
+								name: "li",
+								subcomponents: [
+									new Component({ name: "a", href: "#", text: e }),
+								],
+							});
+						}),
+					}),
+					new Component({
+						name: "div",
+						class: "login",
+					}),
+				],
 			}),
 			new Component({
 				name: "div",
@@ -79,7 +98,7 @@ const elements = [
 				subcomponents: [
 					new Component({
 						name: "h1",
-						class: "site-lettermark",
+						class: "logo",
 						text: "Qwirty",
 					}),
 					new Component({
@@ -97,6 +116,7 @@ const elements = [
 	}),
 	new Component({
 		name: "main",
+		class: "page",
 		subcomponents: [
 			new Component({
 				name: "nav",
@@ -110,6 +130,7 @@ const elements = [
 	}),
 	new Component({
 		name: "footer",
+		class: "page",
 		subcomponents: [
 			new Component({
 				name: "nav",
@@ -185,7 +206,7 @@ const elements = [
 			}),
 		],
 	}),
-];
+].map((e) => e.element);
 
 /** I am considering a second version that will replace the header and footer
  * with statically placed elements that retain their position at the top and
@@ -194,7 +215,7 @@ const elements = [
  * A fixed location, if you will. */
 
 /** For now, we continue as before. */
+console.log(elements);
 elements.forEach((e) => {
-	console.log(e);
-	body.append(e.element);
+	body.append(e);
 });
