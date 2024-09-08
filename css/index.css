@@ -9,4 +9,18 @@ body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header.page,
+footer.page {
+	background-color: hsl(240, 70%, 60%);
+	display: flex;
+}
+
+header.page menu {
+	display: flex;
+}
+header.page menu li {
+	border-right: 1px solid #f0f0f0;
 }
