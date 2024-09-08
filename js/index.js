@@ -93,24 +93,22 @@ class Menu {
 class Card {
 	constructor(info) {
 		this.container = document.createElement(info.type || "card");
-		this.header = document.createElement("div");
-		this.main = info.body || document.createElement("section");
-		this.footer = document.createElement("div");
 
 		const header = info.header || null;
 		const footer = info.footer || null;
 		const img = info.img || null;
 		const text = info.text || null;
+		const link = info.link || null;
 		const menu = Array.isArray(info.menu) ? info.menu : null;
-		const main_subelements = Array.isArray(info.main_subelements)
-			? info.main_subelements
+		const subcomponents = Array.isArray(info.subcomponents)
+			? info.subcomponents
 			: null;
 
-		this.header.className = "card-header";
-		this.main.className = "card-main";
-		this.footer.className = "card-footer";
-
 		if (header) {
+			this.header = document.createElement("div");
+
+			this.header.className = "card-header";
+
 			if (typeof header === "string") {
 				const card_header_text = document.createElement("h2");
 				card_header_text.innerText = header;
@@ -119,49 +117,55 @@ class Card {
 				const card_header = header.element;
 				this.header.append(card_header);
 			}
+
+			this.container.append(this.header);
 		}
-		if (img) {
-			this.img = document.createElement("img");
-			this.img.src = img;
-			this.img.className = "card-img";
+		{
+			this.main = info.body || document.createElement("section");
+			this.main.className = "card-main";
 
-			this.main.append(this.img);
-		}
-		if (text) {
-			this.text = document.createElement("text");
-			this.text.innerText = text;
-			this.text.className = "card-text";
+			if (img) {
+				this.img = document.createElement("img");
+				this.img.src = img;
+				this.img.className = "card-img";
 
-			this.main.append(this.text);
-		}
-		if (main_subelements) {
-			main_subelements.forEach((e) => {
-				const element = e.element;
-				element.className = "card-main-item";
+				this.main.append(this.img);
+			}
+			if (text) {
+				this.text = document.createElement("text");
+				this.text.innerText = text;
+				this.text.className = "card-text";
 
-				this.main.append(element);
-			});
-		}
-		if (menu) {
-			this.menu = new Menu(menu);
-			this.menu.className = "card-menu";
+				this.main.append(this.text);
+			}
+			if (link) {
+				this.link = document.createElement("a");
+				this.link.href = link.href;
+				this.link.innerText = link.text || link.innerText;
+				this.link.className = "card-hyperlink";
 
-			//menu.forEach((e) => {
-			//	const li = document.createElement("li");
-			//	const element = e.element;
+				this.main.append(this.link);
+			}
+			if (subcomponents) {
+				subcomponents.forEach((e) => {
+					const element = e.element;
+					element.className = "card-main-item";
 
-			//	// make modifications to the menu item
-			//	element.className = "card-menu-item";
+					this.main.append(element);
+				});
+			}
+			if (menu) {
+				this.menu = new Menu(menu);
+				this.menu.element.className = "card-menu";
 
-			//	// append each menu item to the list item
-			//	li.append(element);
-
-			//	this.menu.append(li);
-			//});
-
-			this.main.append(this.menu);
+				this.main.append(this.menu.element);
+			}
+			this.container.append(this.main);
 		}
 		if (footer) {
+			this.footer = document.createElement("div");
+
+			this.footer.className = "card-footer";
 			if (typeof footer === "string") {
 				const card_footer_text = document.createElement("text");
 				card_footer_text.innerText = footer;
@@ -170,11 +174,8 @@ class Card {
 				const card_footer = footer.element;
 				this.footer.append(card_footer);
 			}
+			this.container.append(this.footer);
 		}
-
-		this.container.append(this.header);
-		this.container.append(this.main);
-		this.container.append(this.footer);
 	}
 
 	get element() {
@@ -257,6 +258,18 @@ const elements = [
 			new Component({
 				name: "nav",
 				class: "nav-categories",
+				subcomponents: [
+					"Clothing & Shoes",
+					"Electronics",
+					"Books",
+					"Food & Drinks",
+					"Appliances",
+					"Sports & Outdoor",
+					"Toys & Baby",
+					"Garden",
+				].map((e) => {
+					return new Card({ link: { text: e, href: "#" } });
+				}),
 			}),
 			new Component({
 				name: "section",
@@ -339,13 +352,13 @@ const elements = [
 
 /** For now, we continue as before. */
 console.log(elements);
-//elements.forEach((e) => {
-//	e.children.forEach((e) => {
-//		const d = e;
-//		console.log(d.childNodes);
-//	});
-//	console.log(e.children);
-//});
+elements.forEach((e) => {
+	e.children.forEach((e) => {
+		const d = e;
+		console.log(d.childNodes);
+	});
+	console.log(e.children);
+});
 elements.forEach((e) => {
 	body.append(e.element);
 });
