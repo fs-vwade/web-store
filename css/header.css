@@ -1,0 +1,17 @@
+@import url("common.css");
+
+header.page {
+	flex-direction: column;
+}
+
+header.page nav {
+	display: flex;
+	justify-content: space-between;
+}
+header.page menu {
+	display: flex;
+}
+header.page menu li {
+	border-right: 1px solid #f0f0f0;
+	padding: 0.25rem;
+}

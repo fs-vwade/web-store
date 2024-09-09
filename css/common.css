@@ -1,8 +1,9 @@
 :root {
 	--phi: calc(1 / (pow(5, 0.5) * 0.5 + 0.5));
-}
-
-menu,
-ul {
-	list-style-type: none;
+	--header-text-color: #f0f0f0;
+	--header-background-color: hsl(240, 70%, 60%);
+	--link-color: var(--header-text-color);
+	--link-visited: #fffcf8;
+	--link-hover: #f0c0d0;
+	--link-active: #f0d0c0;
 }

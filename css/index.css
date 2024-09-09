@@ -1,26 +1,39 @@
 @import url("common.css");
+@import url(shared.css);
+@import url(header.css);
+@import url(main.css);
+@import url(footer.css);
 
 html {
 	scrollbar-width: none;
 	-ms-overflow-style: none;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	display: flex;
+	flex-direction: column;
 }
 
-header.page,
-footer.page {
-	background-color: hsl(240, 70%, 60%);
-	display: flex;
+menu,
+ul {
+	margin: 0;
+	list-style-type: none;
+	padding-inline-start: 0;
 }
 
-header.page menu {
-	display: flex;
+a:link {
+	color: var(--link-color);
 }
-header.page menu li {
-	border-right: 1px solid #f0f0f0;
+a:visited {
+	color: var(--link-visited);
+}
+a:hover {
+	color: var(--link-hover);
+}
+a:active {
+	color: var(--link-active);
 }

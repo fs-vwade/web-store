@@ -1,0 +1,26 @@
+@import url("common.css");
+
+main.page {
+	color: hsl(0, 0%, 16%);
+	display: flex;
+	flex-direction: row;
+	align-self: center;
+}
+
+main.page nav a {
+	background-color: var(--header-background-color);
+}
+
+section.product-grid {
+	display: flex;
+	flex: auto;
+	flex-wrap: wrap;
+	max-width: 60rem;
+}
+
+card {
+	/*min-width: 25%;
+	min-width: 15rem;*/
+	width: 15rem;
+	max-width: 40%;
+}
